@@ -1,0 +1,26 @@
+# Airline Insurance — Apache Configuration
+Options -Indexes
+
+# Block direct access to sensitive files
+<FilesMatch "\.(sql|log|env|json|lock|md)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^(setup\.php|composer\..*|package\.json)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# Protect includes and config directories
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(includes|config)/.*$ - [F,L]
+</IfModule>
+
+# PHP settings
+<IfModule mod_php.c>
+    php_value upload_max_filesize 5M
+    php_value post_max_size 8M
+    php_value max_execution_time 60
+</IfModule>
